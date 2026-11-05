@@ -1,0 +1,11 @@
+{
+  "version": "0.5.6",
+  "entrypoint": "install.ps1",
+  "backupFiles": [
+    "silnik-8.60/server/config.lua",
+    "silnik-8.60/server/src/player.h",
+    "silnik-8.60/server/src/player.cpp",
+    "silnik-8.60/server/data/events/scripts/player.lua",
+    "silnik-8.60/server/data/creaturescripts/scripts/firstitems.lua"
+  ]
+}
