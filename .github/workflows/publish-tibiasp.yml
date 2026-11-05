@@ -1,0 +1,110 @@
+name: Publish TibiaSP update
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'packages/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tibiasp-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out update packages
+        uses: actions/checkout@v4
+
+      - name: Verify the newest update
+        id: package
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          import re
+          import sys
+          import zipfile
+          from pathlib import Path
+
+          base = Path("packages")
+          candidates = []
+          for path in base.glob("v*/latest.json"):
+              match = re.fullmatch(r"v(\d+)\.(\d+)\.(\d+)", path.parent.name)
+              if match:
+                  candidates.append((tuple(map(int, match.groups())), path))
+
+          if not candidates:
+              print("No update packages yet. Nothing to publish.")
+              with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+                  out.write("ready=false\n")
+              sys.exit(0)
+
+          _, manifest_path = max(candidates)
+          info = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+          version = info.get("version")
+          tag = manifest_path.parent.name
+          if not isinstance(version, str) or tag != "v" + version:
+              sys.exit("Manifest version does not match package directory")
+          if not re.fullmatch(r"\d+\.\d+\.\d+", version):
+              sys.exit("Invalid semantic version")
+
+          zips = list(manifest_path.parent.glob("*.zip"))
+          if len(zips) != 1:
+              sys.exit("Exactly one ZIP must accompany latest.json")
+          package = zips[0]
+          expected_url = (
+              "https://github.com/xKendo/tibiasp-updates/releases/download/"
+              + tag + "/" + package.name
+          )
+          if info.get("url") != expected_url:
+              sys.exit("Manifest URL does not match ZIP and release tag")
+
+          digest = hashlib.sha256(package.read_bytes()).hexdigest()
+          if info.get("sha256", "").lower() != digest:
+              sys.exit("SHA-256 mismatch; release blocked")
+          with zipfile.ZipFile(package) as archive:
+              corrupt = archive.testzip()
+              if corrupt:
+                  sys.exit("Damaged ZIP member: " + corrupt)
+
+          title = info.get("title", "")
+          if not isinstance(title, str) or not title.strip() or "\n" in title:
+              sys.exit("Invalid release title")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write("ready=true\n")
+              out.write("tag=" + tag + "\n")
+              out.write("zip=" + str(package) + "\n")
+              out.write("manifest=" + str(manifest_path) + "\n")
+              out.write("description=" + title.strip() + "\n")
+          print("Verified", tag, package.name, digest)
+          PY
+
+      - name: Publish release with verified assets
+        if: steps.package.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.package.outputs.tag }}
+          PACKAGE: ${{ steps.package.outputs.zip }}
+          MANIFEST: ${{ steps.package.outputs.manifest }}
+          DESCRIPTION: ${{ steps.package.outputs.description }}
+        shell: bash
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists. Leaving published assets unchanged."
+            exit 0
+          fi
+          gh release create "$TAG" "$PACKAGE" "$MANIFEST" \
+            --target "$GITHUB_SHA" \
+            --title "TibiaSP $TAG" \
+            --notes "$DESCRIPTION" \
+            --latest
+          echo "Published $TAG"
