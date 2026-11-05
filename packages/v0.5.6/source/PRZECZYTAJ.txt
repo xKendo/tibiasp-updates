@@ -1,0 +1,19 @@
+TibiaSP v0.5.6 - stamina 42:00 + wyposazenie NOWYCH postaci
+
+STAMINA
+- Wskaznik w OTClientV8 pozostaje widoczny i zawsze pokazuje 42:00.
+- Stamina nie zuzywa sie ani nie wymaga regeneracji.
+- Nie ogranicza zdobywanego EXP.
+
+STARTOWE EQ (wylacznie nowe postacie przy pierwszym logowaniu)
+- mace (2398), jacket (2650), torch (2050) i backpack (1988).
+- Stary starter club (2382) zostaje usuniety tylko z nowej postaci.
+- Istniejace postacie i 50 botow: bez zmian ekwipunku.
+
+BEZPIECZENSTWO
+- Nie modyfikuje bazy SQL, kont, postaci, mapy, Docker volumes ani OTClient.
+- Nie modyfikuje inteligencji ani predkosci botow.
+- Instalator wymaga zatrzymanego serwera, sprawdza SHA-256 i wykonuje kopie.
+- W razie bledu przywraca zmienione pliki.
+- Wymaga testu na docelowym serwerze Windows / Docker.
+- Instaluj wylacznie przez launcher TibiaSP -> Aktualizacje.
