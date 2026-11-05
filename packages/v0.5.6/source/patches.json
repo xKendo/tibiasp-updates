@@ -1,0 +1,65 @@
+{
+  "config.lua": {
+    "old": [
+      "b5cb83b15db65f47ae70af730064030ccf0ea84eda658d67de9d221c72c91b4b",
+      "612239850f2adebf9f770a0ce0a28af41a8926717c43bd002ad0fe72501727b0"
+    ],
+    "new": "612239850f2adebf9f770a0ce0a28af41a8926717c43bd002ad0fe72501727b0",
+    "replacements": [
+      {
+        "before": "staminaSystem = true\n",
+        "after": "staminaSystem = false\n"
+      }
+    ]
+  },
+  "src/player.h": {
+    "old": [
+      "19e43d8bdc0de6440b4a7eaabe17760dec384b9c44a768de32f43d7f309465eb",
+      "28498a70d5f6e7bed7beaa405b5ecec189f6f96099a4b73e89d8e3243367d141"
+    ],
+    "new": "28498a70d5f6e7bed7beaa405b5ecec189f6f96099a4b73e89d8e3243367d141",
+    "replacements": [
+      {
+        "before": "\t\t\treturn staminaMinutes;\n",
+        "after": "\t\t\t// Compatibility field for the 8.60 protocol only. No gameplay stamina.\n\t\t\treturn 2520;\n"
+      }
+    ]
+  },
+  "src/player.cpp": {
+    "old": [
+      "d0c81fb90eca15b3fd5bc41c6063f466fc6c7902b707275e075ed9f40407a15f",
+      "6cad1d0e12b7bca49a75ed4be8917e9c46d7179fc1b5a2ec96eaae4dcb7784a6"
+    ],
+    "new": "6cad1d0e12b7bca49a75ed4be8917e9c46d7179fc1b5a2ec96eaae4dcb7784a6",
+    "replacements": [
+      {
+        "before": "\tif (hasFlag(PlayerFlag_NotGainExperience) || gainExp == 0 || staminaMinutes == 0) {\n",
+        "after": "\tif (hasFlag(PlayerFlag_NotGainExperience) || gainExp == 0) {\n"
+      }
+    ]
+  },
+  "data/events/scripts/player.lua": {
+    "old": [
+      "ca8fea6f10ba64fddefe3e86883570a93e3f4fe28623c7d003de5771ee3c0006",
+      "e2f820e10da0a7f3029674fdf3d16e6d998d3ad0c88edebc838cc713527db3aa"
+    ],
+    "new": "e2f820e10da0a7f3029674fdf3d16e6d998d3ad0c88edebc838cc713527db3aa",
+    "replacements": [
+      {
+        "before": "local function useStamina(player)\n\tlocal staminaMinutes = player:getStamina()\n\tif staminaMinutes == 0 then\n\t\treturn\n\tend\n\n\tlocal playerId = player:getId()\n\tif not nextUseStaminaTime[playerId] then\n\t\tnextUseStaminaTime[playerId] = 0\n\tend\n\n\tlocal currentTime = os.time()\n\tlocal timePassed = currentTime - nextUseStaminaTime[playerId]\n\tif timePassed <= 0 then\n\t\treturn\n\tend\n\n\tif timePassed > 60 then\n\t\tif staminaMinutes > 2 then\n\t\t\tstaminaMinutes = staminaMinutes - 2\n\t\telse\n\t\t\tstaminaMinutes = 0\n\t\tend\n\t\tnextUseStaminaTime[playerId] = currentTime + 120\n\telse\n\t\tstaminaMinutes = staminaMinutes - 1\n\t\tnextUseStaminaTime[playerId] = currentTime + 60\n\tend\n\tplayer:setStamina(staminaMinutes)\nend\n\n",
+        "after": ""
+      },
+      {
+        "before": "\t-- Stamina modifier\n\tif configManager.getBoolean(configKeys.STAMINA_SYSTEM) then\n\t\tuseStamina(self)\n\n\t\tlocal staminaMinutes = self:getStamina()\n\t\tif staminaMinutes > 2400 and self:isPremium() then\n\t\t\texp = exp * 1.5\n\t\telseif staminaMinutes <= 840 then\n\t\t\texp = exp * 0.5\n\t\tend\n\tend\n",
+        "after": ""
+      }
+    ]
+  },
+  "data/creaturescripts/scripts/firstitems.lua": {
+    "old": [
+      "7b2d74c24ffefaf9afef9425ae1342c2c919722aa1f038ef52b2000d93c8747a",
+      "b6d34cd39656c7806106f3759208cc5d4515c8f37937cf30e3fc468e80607f14"
+    ],
+    "new": "2011c028ec84db2deb9027a44f9658d5cffb9be6f56a831bab2c7ad56c38fb84"
+  }
+}
