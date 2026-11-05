@@ -11,7 +11,7 @@ $patchFile = Join-Path $PSScriptRoot 'patches.json'
 $changed = New-Object 'System.Collections.Generic.List[string]'
 $started = $false
 $docker = $null
-$utf8 = New-Object System.Text.UTF8Encoding($false, $true)
+$utf8 = [System.Text.UTF8Encoding]::new($false, $true)
 
 function Say([string]$msg) { Write-Host ('[TibiaSP ' + $version + '] ' + $msg) }
 function Ensure([bool]$ok,[string]$msg) { if (-not $ok) { throw $msg } }
