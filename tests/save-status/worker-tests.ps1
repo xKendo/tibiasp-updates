@@ -2,7 +2,8 @@
 # All writes/process substitutes are confined to a new fixture directory.
 param(
  [Parameter(Mandatory=$true)][string]$WorkerPath,
- [Parameter(Mandatory=$true)][string]$PackageZip
+ [Parameter(Mandatory=$true)][string]$PackageZip,
+ [ValidatePattern('^\d+\.\d+\.\d+$')][string]$ExpectedVersion = '0.5.7'
 )
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.IO.Compression,System.IO.Compression.FileSystem
@@ -31,7 +32,7 @@ try {
  $script:manifest = ReadJson $manifestPath
  ValidateManifest $manifest
  Assert ((Get-FileHash -LiteralPath $PackageZip -Algorithm SHA256).Hash -ieq $manifest.sha256) 'actual release ZIP matches latest.json SHA-256'
- Assert ($manifest.version -eq '0.5.7') 'actual release has intended version'
+ Assert ($manifest.version -eq $ExpectedVersion) 'actual release has intended version'
  foreach ($bad in @(
   @{version='0.5.7';url='http://example.invalid/update.zip';sha256=('a'*64)},
   @{version='../0.5.7';url='https://example.invalid/update.zip';sha256=('a'*64)},
@@ -144,7 +145,7 @@ exit "$(cat "$TIBIASP_WORKER_FIXTURE/docker-exit.txt")"
   Assert ($accepted -eq $case.accepted) 'actual worker completion requires marker and rejects known nonzero exit'
   Assert ((Test-Path -LiteralPath $installedFile) -eq $case.accepted) 'installed version is written only on accepted completion'
   if ($case.accepted) {
-   Assert ((ReadJson $installedFile).version -eq '0.5.7') 'installed.json records intended version'
+   Assert ((ReadJson $installedFile).version -eq $ExpectedVersion) 'installed.json records intended version'
    Assert ((ReadJson $statusFile).state -eq 'installed') 'GUI status records installed state'
   }
  }

@@ -1,0 +1,15 @@
+TibiaSP v0.5.8 - polskie komunikaty
+
+Ta aktualizacja przywraca polski jezyk komunikatow pomocnika serwera
+i wlasnych logow skryptu Lua. Znaczniki protokolu (np. READY, SAVE_DONE)
+i kody techniczne pozostaja bez zmian.
+
+Nie zmienia zasad uruchamiania, zapisu, zatrzymywania ani polityki restartu.
+Nie zmienia bazy, postaci, swiata, AI botow, staminy ani wyposazenia.
+Komunikaty pochodzace bezposrednio z Dockera lub silnika moga miec jezyk
+ustawiony przez te zewnetrzne narzedzia.
+
+Instaluj przez dotychczasowy launcher, po zatrzymaniu serwera.
+Instalator weryfikuje SHA-256 i wykonuje kopie z mozliwoscia cofniecia zmian.
+Obsluguje znane pliki bazowe oraz wersje v0.5.7.
+Po instalacji zamknij oba okna launchera i uruchom URUCHOM_TIBIASP.vbs ponownie.

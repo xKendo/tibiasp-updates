@@ -6,8 +6,9 @@ import shutil
 import subprocess
 import tempfile
 
-REPO = next(p for p in Path(__file__).resolve().parents if (p / 'packages/v0.5.7').is_dir())
-SOURCE = REPO / 'packages/v0.5.7/source/payload'
+VERSION = os.environ.get('TIBIASP_TEST_VERSION', '0.5.7')
+REPO = next(p for p in Path(__file__).resolve().parents if (p / f'packages/v{VERSION}').is_dir())
+SOURCE = REPO / f'packages/v{VERSION}/source/payload'
 PWSH = os.environ.get('TIBIASP_TEST_PWSH') or shutil.which('pwsh')
 assert PWSH, 'Set TIBIASP_TEST_PWSH or put pwsh on PATH'
 TEXLUA = os.environ.get('TIBIASP_TEST_TEXLUA') or shutil.which('texlua')

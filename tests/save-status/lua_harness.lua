@@ -177,7 +177,9 @@ elseif case:match("^response_.*_failure$") then
     command("SAVE"); tick()
     assert(saveCalls == 1 and read(processing) ~= nil)
     assert(read(response) == oldId .. " SAVE_DONE\n", "failed publication must preserve existing response")
-    for _, message in ipairs(messages) do assert(not message:match("Save completed"), "false completion log") end
+    for _, message in ipairs(messages) do
+        assert(not message:match("Save completed") and not message:match("Zapis swiata zakonczony"), "false completion log")
+    end
     command("SAVE"); tick(); loadHandler(); tick()
     assert(saveCalls == 1 and read(request) ~= nil, "failed response must never cause save replay")
 elseif case == "new_request_during_save" then

@@ -25,3 +25,6 @@
   services, not proof of Windows/WPF behavior or real game/database persistence.
 - Communicate in Polish and report release success only when GitHub Actions and
   the launcher-facing release assets have been checked.
+- Keep every user-facing TibiaSP UI/log/status/error message in Polish, matching
+  the existing launcher. Machine protocol tokens such as PING, READY, SAVE_DONE
+  and JSON keys remain unchanged. Do not ship new English diagnostic prose.

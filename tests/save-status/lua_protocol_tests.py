@@ -5,7 +5,8 @@ import shutil
 import tempfile
 
 ROOT = Path(__file__).resolve().parent
-SOURCE = ROOT.parents[1] / 'packages/v0.5.7/source/payload/silnik-8.60/server/data/globalevents/scripts/tibiasp_launcher_commands.lua'
+VERSION = os.environ.get('TIBIASP_TEST_VERSION', '0.5.7')
+SOURCE = ROOT.parents[1] / f'packages/v{VERSION}/source/payload/silnik-8.60/server/data/globalevents/scripts/tibiasp_launcher_commands.lua'
 TEXLUA = os.environ.get('TIBIASP_TEST_TEXLUA') or shutil.which('texlua')
 assert TEXLUA, 'texlua is required'
 CASES = [

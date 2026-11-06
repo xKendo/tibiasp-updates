@@ -6,6 +6,11 @@ They run on a POSIX host with Python 3, PowerShell 7 and `texlua` (TeX Live).
 TIBIASP_TEST_PWSH=/path/to/pwsh python3 tests/save-status/run_checks.py
 ```
 
+The original full runner targets the v0.5.7 baseline. The Lua, installer and
+process integration checks also accept `TIBIASP_TEST_VERSION=0.5.8`; run those
+three scripts with that variable to exercise the localized package. The worker
+contract check accepts `-ExpectedVersion 0.5.8` for its corresponding release ZIP.
+
 The Lua tests run the actual handler. The PowerShell checks load helper functions
 or the launcher's function AST without constructing its WPF window. The installer
 checks use synthetic originals with fixture-only old hashes and the actual payload

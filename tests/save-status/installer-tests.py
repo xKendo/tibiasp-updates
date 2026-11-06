@@ -14,8 +14,9 @@ import sys
 import tempfile
 import unittest
 
-SOURCE_CANDIDATES = (Path(__file__).resolve().parents[2] / 'packages/v0.5.7/source',
-                     Path.cwd() / 'packages/v0.5.7/source')
+VERSION = os.environ.get('TIBIASP_TEST_VERSION', '0.5.7')
+SOURCE_CANDIDATES = (Path(__file__).resolve().parents[2] / f'packages/v{VERSION}/source',
+                     Path.cwd() / f'packages/v{VERSION}/source')
 REPO_SOURCE = Path(os.environ['TIBIASP_INSTALLER_SOURCE']) if 'TIBIASP_INSTALLER_SOURCE' in os.environ else next(p for p in SOURCE_CANDIDATES if p.is_dir())
 PWSH_NAME = os.environ.get('TIBIASP_TEST_PWSH') or shutil.which('pwsh')
 assert PWSH_NAME, 'Set TIBIASP_TEST_PWSH or put pwsh on PATH'
@@ -153,7 +154,7 @@ class InstallerFixture(unittest.TestCase):
         if manifest_path.is_file():
             manifest = json.loads(manifest_path.read_text(encoding='utf-8-sig'))
         else:
-            manifest = {'version':'0.5.7', 'files':[
+            manifest = {'version':VERSION, 'files':[
                 {'path':relative, 'new':digest(self.package / 'payload' / relative)}
                 for relative in CONTROL
             ]}
@@ -310,7 +311,7 @@ class InstallerFixture(unittest.TestCase):
         old = json.loads((REPO_SOURCE.parent.parent / 'v0.5.6/source/update-package.json').read_text())
         self.assertEqual(set(current), set(old))
         self.assertEqual(current['entrypoint'], 'install.ps1')
-        self.assertEqual(current['version'], '0.5.7')
+        self.assertEqual(current['version'], VERSION)
         self.assertEqual(current['backupFiles'], list(CONTROL))
 
 
