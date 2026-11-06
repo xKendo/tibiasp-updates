@@ -1,0 +1,2 @@
+# Package and payload checksums depend on exact bytes on every checkout platform.
+packages/** -text

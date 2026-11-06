@@ -1,0 +1,26 @@
+{
+  "version": "0.5.7",
+  "files": [
+    {
+      "path": "TibiaSP_Launcher.ps1",
+      "old": [
+        "6a8039253acbc80106bc01016b59d2be2a44794ce2a24372df950cdffae89e19"
+      ],
+      "new": "365569b531a66328202b4dd105c838e28201ae1caf21bd3728340dc76cc04000"
+    },
+    {
+      "path": "TIBIA_REAL860.ps1",
+      "old": [
+        "69a47371dcac784a1986f95fe8b670cedc99aed17f430ba67e9d7817f46b275d"
+      ],
+      "new": "ba651f845dec459db6e8f0bcfcbaab00da12e02fd300b6c7ec768dc9e3fa6ff1"
+    },
+    {
+      "path": "silnik-8.60/server/data/globalevents/scripts/tibiasp_launcher_commands.lua",
+      "old": [
+        "df645f172925a7ea42d404f982ef6956efdd4d4390cdd6a24cd4682831d8477a"
+      ],
+      "new": "a5f09e939505495b382685ecaa64a817d12e32efca726cc5dcb54f32d4180f97"
+    }
+  ]
+}

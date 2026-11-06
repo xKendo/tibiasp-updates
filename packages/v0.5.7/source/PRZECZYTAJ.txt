@@ -1,0 +1,32 @@
+TibiaSP v0.5.7 - zapis swiata, bezpieczne zatrzymanie i status
+
+Aktualizacja przez dotychczasowy mechanizm GitHub Releases i launchera.
+
+Zakres: launcher WPF, TIBIA_REAL860.ps1 i event Lua polecen launchera.
+Instalator nie zmienia Compose, config.lua, silnika C++, SQL, postaci,
+mapy, botow, staminy ani wyposazenia. Nie buduje ani nie uruchamia kontenerow.
+
+Instaluj przez mechanizm aktualizacji launchera, przy zatrzymanej grze.
+Docker Desktop musi byc gotowy do weryfikacji stanu kontenera.
+Po instalacji zamknij i ponownie otworz launcher.
+
+Instalator sprawdza SHA-256 znanych wersji i wszystkich nowych plikow,
+wykonuje zweryfikowana kopie i przywraca zmienione pliki po bledzie.
+Rozpoznane zalegle polecenia sa archiwizowane przy zatrzymanej grze,
+aby stary SHUTDOWN nie wykonal sie podczas kolejnego uruchomienia.
+Nieznane polecenie lub nieznany hash przerywa instalacje.
+Kopie: LOCALAPPDATA/TibiaSP/Backups/SaveStatus_0.5.7_...
+
+Start wymaga istniejacych kontenerow. Najpierw uruchamiana jest istniejaca
+baza i sprawdzany jej healthcheck. Zadanie playerbot-setup nie jest ponawiane.
+Gotowosc gry jest potwierdzana odpowiedzia eventu Lua.
+Bezpieczne zatrzymanie pozostawia baze uruchomiona.
+Po bledzie zamykania automatyczny restart gry nie jest wlaczany w ciemno.
+
+SAVE_DONE potwierdza zakonczenie wywolania zapisu w Lua. Weryfikacja
+trwalosci zapisu wymaga testu na docelowym silniku i bazie oraz kontroli
+bledow zapisu w dzienniku silnika. Nie wykonano jej na danych uzytkownika.
+
+Wymagany test integracyjny: Windows PowerShell 5.1, Docker Desktop,
+docelowy launcher/aktualizator oraz kopia testowa swiata i bazy.
+Test docelowego Windows i rzeczywistego zapisu wymaga weryfikacji po instalacji.

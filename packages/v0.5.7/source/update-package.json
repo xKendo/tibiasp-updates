@@ -1,0 +1,9 @@
+{
+  "version": "0.5.7",
+  "entrypoint": "install.ps1",
+  "backupFiles": [
+    "TibiaSP_Launcher.ps1",
+    "TIBIA_REAL860.ps1",
+    "silnik-8.60/server/data/globalevents/scripts/tibiasp_launcher_commands.lua"
+  ]
+}
